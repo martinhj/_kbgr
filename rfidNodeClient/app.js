@@ -22,6 +22,19 @@ socket.on('connect', function(data) {
       socket.emit('read', readObject);
 
 
+      readObject = {
+        kaiId: 1,
+        kaiRead: 'aba1'
+      };
+      socket.emit('read', readObject);
+  
+
+      readObject = {
+        kaiId: 0,
+        kaiRead: 'bbb1'
+      };
+      socket.emit('read', readObject);
+
 
       });
 
