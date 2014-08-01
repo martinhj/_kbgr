@@ -6,6 +6,7 @@ var server = http.createServer(app);
 var io = socket.listen(server);
 
 io.on('connection', function(client) {
+  console.log("Some connection...");
   //console.log(io.sockets.connected); 
 
 
@@ -55,6 +56,14 @@ io.on('connection', function(client) {
     console.log(data);
   });
 
+
+
+  /**
+   * Incoming rfid read.
+   */
+  client.on('read', function(data) {
+    console.log(data);
+  });
 
 
   /**
