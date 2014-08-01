@@ -1,0 +1,1 @@
+node + rfid + socket.io + ipad optical recognition prototype.
