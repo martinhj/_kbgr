@@ -63,6 +63,20 @@ io.on('connection', function(client) {
    */
   client.on('read', function(data) {
     console.log(data);
+    for (test in io.sockets.connected) {
+      console.log('for loop test');
+      var kaiId = io.sockets.connected[test].name.id;
+      console.log('local kaiId: ' + kaiId);
+      console.log('received kaiId: ' + data.kaiId);
+      if (kaiId === data.kaiId) {
+        // change this line to send to right room based on hash
+        // affiliated with the id
+        var kaiRoom = io.sockets.connected[test].rooms[0]; 
+        io.to(kaiRoom).emit('messages', { hello: data.kaiRead });
+        client.emit('messages', { hello: 'Sent read further' });
+      }
+    }
+    client.emit('messages', { hello: 'Received read.' });
   });
 
 
