@@ -62,12 +62,10 @@ io.on('connection', function(client) {
    * Incoming rfid read.
    */
   client.on('read', function(data) {
+    client.emit('messages', { hello: 'Received read.' });
     console.log(data);
     for (test in io.sockets.connected) {
-      console.log('for loop test');
       var kaiId = io.sockets.connected[test].name.id;
-      console.log('local kaiId: ' + kaiId);
-      console.log('received kaiId: ' + data.kaiId);
       if (kaiId === data.kaiId) {
         // change this line to send to right room based on hash
         // affiliated with the id
@@ -76,7 +74,6 @@ io.on('connection', function(client) {
         client.emit('messages', { hello: 'Sent read further' });
       }
     }
-    client.emit('messages', { hello: 'Received read.' });
   });
 
 
