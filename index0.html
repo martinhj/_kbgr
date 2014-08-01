@@ -1,0 +1,59 @@
+<html>
+<head>
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+</head>
+<body>
+<script>
+  var server = io('http://localhost:8080');
+  server.on('connect', function(data) {
+
+      nickname = {
+        name: '',
+        id: 0
+      };
+
+      //nickname.name = prompt('what\'s your name?');
+      //nickname.id = parseInt(prompt('what\'s your id?'), 10);
+      nickname.name = 'm';
+      nickname.id = 0;
+
+      
+      server.emit('join', nickname);
+      });
+
+
+
+  server.on('messages', function (data) {
+      console.log(data.hello);
+      });
+
+
+
+  var message = "test";
+  
+  server.emit('messages', message);
+
+
+  // let's create an object here:
+  var binocleObject = {
+          name: 'Shut up and Keep talking',
+          id: 1,
+          thisThing: function(test) {
+            console.log("is this even possible, " + test);
+            return true;
+          }
+
+  };
+  server.emit('binocleId', binocleObject);
+  
+ /*
+  server.emit('object', myObject);
+  server.emit('object', myObject.__proto__);
+  server.emit('object', JSON.stringify(myObject));
+  server.emit('stringObject', JSON.stringify(myObject));
+  console.log(myObject);
+  console.log(myObject.__proto__);
+ */
+</script>
+</body>
+</html>
