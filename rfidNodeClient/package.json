@@ -1,0 +1,22 @@
+{
+  "name": "rfidNodeClient",
+  "description": "rfidNodeClient for the node + rfid + socket.io + ipad optical recognition prototype.",
+  "version": "0.0.1",
+  "author": {
+    "name": "MHJ",
+    "email": "martinhj@gmail.com"
+  },
+  "keywords": [
+    "rfid",
+    "web",
+    "app"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/martinhj/_kbgr"
+  },
+  "dependencies": {
+    "socket.io-client": "1.0.6"
+  },
+  "homepage": "https://github.com/martinhj/_kbgr"
+}
