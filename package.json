@@ -1,0 +1,23 @@
+{
+  "name": "_kbgr",
+  "description": "node + rfid + socket.io + ipad optical recognition prototype.",
+  "version": "0.0.1",
+  "author": {
+    "name": "MHJ",
+    "email": "martinhj@gmail.com"
+  },
+  "keywords": [
+    "rfid",
+    "web",
+    "app"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/martinhj/_kbgr"
+  },
+  "dependencies": {
+    "express": "~1.0.7",
+    "socket-io": "1.0.6"
+  },
+  "homepage": "https://github.com/martinhj/_kbgr"
+}
