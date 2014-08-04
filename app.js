@@ -5,16 +5,18 @@ var server = http.createServer(app);
 
 var io = socket.listen(server);
 
+/**
+ * On incoming connection.
+ */
 io.on('connection', function(client) {
   console.log("Some connection...");
-  //console.log(io.sockets.connected); 
 
 
 
   /**
    * Welcome message
    */
-  client.emit('messages', { hello: 'world' });
+  client.emit('messages', { hello: 'Connceted!' });
 
 
 
@@ -22,28 +24,11 @@ io.on('connection', function(client) {
    * Join
    */
   client.on('join', function(name) {
-    //client.set('nickname', name);
     client.name = name;
-    console.log(client.name);
-    console.log(client.name.name + ' connected...');
-    for (test in io.sockets.connected) {
-      console.log("\n\n\n<<<<<<<<>>>>>>>");
-      console.log(test);
-      if (typeof(io.sockets.connected[test].name) !== 'undefined') {
-        console.log(io.sockets.connected[test].name);
-        console.log(io.sockets.connected[test].name.name);
-        console.log(io.sockets.connected[test].name.id);
-        var kaiId = io.sockets.connected[test].name.id;
-        console.log(io.sockets.connected[test].rooms);
-        var kaiRoom = io.sockets.connected[test].rooms[0];
-        if (kaiId === 0) {
-          io.to(kaiRoom).emit('messages', { hello: 'room' });
-        }
-      } else {
-        console.log("Not yet set....");
-      }
-    }
-    //console.log(io.sockets.connected);
+    console.log(client.name.name 
+      + ' connected (with id: ' + client.name.id + ')...');
+    client.emit('messages', 
+      { hello: 'You have joined as ' + client.name.name });
   });
 
 
@@ -63,38 +48,43 @@ io.on('connection', function(client) {
    */
   client.on('read', function(data) {
     client.emit('messages', { hello: 'Received read.' });
-    console.log(data);
-    for (test in io.sockets.connected) {
-      var kaiId = io.sockets.connected[test].name.id;
+    console.log("data from read: " + JSON.stringify(data));
+    for (connection in io.sockets.connected) {
+      var kaiId = io.sockets.connected[connection].name.id;
       if (kaiId === data.kaiId) {
-        // change this line to send to right room based on hash
-        // affiliated with the id
-        var kaiRoom = io.sockets.connected[test].rooms[0]; 
-        io.to(kaiRoom).emit('messages', { hello: data.kaiRead });
+        
+        var kaiRoom = io.sockets.connected[connection].id; 
+
+        var l = kaiGlasses.length;
+        for (var i = 0; i < l; i++) {
+          if (kaiGlasses[i].kaiReadId === data.kaiRead) {
+            console.log('Found object: ' + JSON.stringify(kaiGlasses[i]));
+            console.log('Sending ' + kaiGlasses[i].kaiURL + ' to '
+              + io.sockets.connected[connection].name.name
+              + ' (kaiId: ' + data.kaiId + ').' );
+            io.to(kaiRoom).emit('goggleRead', { kaiURL: kaiGlasses[i].kaiURL});
+            break;
+          }
+        }
         client.emit('messages', { hello: 'Sent read further' });
+        break;
       }
     }
   });
 
 
-  /**
-   * Incoming object
-   */
-  client.on('binocleId', function(data) {
-    console.log(data);
-    console.log("> " + data.name);
-    // send data to tablet browser here
-  });
 
-
-
-  /**
-   * Incoming string object
-   */
-  client.on('stringObject', function(data) {
-    console.log(JSON.parse(data));
-  });
 });
+
+
+var kaiGlasses = [
+{ kaiReadId: 0,
+  kaiURL: 'shut-up-keep-talking-847'
+},
+{ kaiReadId: 1,
+  kaiURL: 'twoway-808'
+}];
+
 
 
 server.listen(8080);
