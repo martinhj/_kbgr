@@ -43,6 +43,11 @@ io.on('connection', function(client) {
 
 
 
+  client.on('ardTest', function(data) {
+    console.log(data);
+    client.broadcast.emit('messages', { hello: data });
+  });
+
   /**
    * Incoming rfid read.
    */
