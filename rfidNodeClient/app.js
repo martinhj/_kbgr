@@ -1,6 +1,33 @@
 var io = require('socket.io-client')('http://localhost:8080');
 var socket = io.connect();
+var serialport = require('serialport');
+var SerialPort = serialport.SerialPort;
 
+try {
+  var sp = new SerialPort('/dev/cu.usbmodemfa131', {
+    baudrate: 115200,
+    parser: serialport.parsers.readline("\n")  
+  },
+  function(error) {
+    console.log(error);
+    console.log("The rfid reader will not work.");
+    // throw "Could not open the serialport";
+  });
+
+}
+catch(err) {
+  console.log(err);
+}
+
+
+
+sp.on('open', function() {
+  console.log('Serial port Opened');
+  sp.on('data', function(data) {
+    console.log(data);
+    socket.emit('ardTest', data);
+  });
+});
 
 
 // set information to read keyboard input
@@ -84,3 +111,21 @@ function whichObjects() {
     console.log('Press \'' + i + '\' for ' + JSON.stringify(readObjects[i]));
   }
 }
+
+
+
+var serialPortString = (function selectRfidSerialPort() {
+  var foundsp;
+  serialport.list(function (err, ports) {
+    ports.forEach(function(port) {
+      foundsp = port.comName;
+      if(port.manufacturer == "Arduino (www.arduino.cc)") {
+        console.log(">>>Test<<<");
+        console.log(port.manufacturer);
+        console.log(foundsp);
+        return foundsp;
+      }
+    });
+  });
+}());
+console.log(serialPortString);
