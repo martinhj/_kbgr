@@ -30,11 +30,9 @@ sp.on('open', function() {
     console.log(data);
     switch(data.trim()) {
     case '0':
-      console.log("Hurray: 0");
       socket.emit('read', readObjects[0]);
       break;
     case '1':
-      console.log("Hurray: 1");
       socket.emit('read', readObjects[1]);
       break;
     default:
