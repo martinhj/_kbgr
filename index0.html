@@ -40,11 +40,13 @@
    * What to do on recieving a message about a read from the server.
    */
   server.on('goggleRead', function (readData) {
-      var url = 'http://www.kaibosh.no/' + readData.kaiURL;
+      //var url = 'http://www.kaibosh.no/' + readData.kaiURL;
+      var url = 'html/' + readData.kaiURL + ".html";
       if (document.readyState === 'complete') {
         console.log('Opening url: ' + url);
         (function() {
-         mhjIncludeDiv.load(url);
+         //mhjIncludeDiv.load(url);
+         window.open(url, '_self');
          })();
       } else {
         console.log('not ready!');
