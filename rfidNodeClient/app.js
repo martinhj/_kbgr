@@ -4,13 +4,16 @@ var serialport = require('serialport');
 var SerialPort = serialport.SerialPort;
 
 try {
-  var sp = new SerialPort('/dev/cu.usbmodemfa131', {
+  var sp = new SerialPort('/dev/cu.usbmodemfd121', {
     baudrate: 115200,
     parser: serialport.parsers.readline("\n")  
   },
   function(error) {
-    console.log(error);
-    console.log("The rfid reader will not work.");
+    //console.log(error);
+    if (error) { 
+      console.log("The rfid reader will not work.");
+    }
+    console.log(">>> " + serialPortString());
     // throw "Could not open the serialport";
   });
 
@@ -25,6 +28,18 @@ sp.on('open', function() {
   console.log('Serial port Opened');
   sp.on('data', function(data) {
     console.log(data);
+    switch(data.trim()) {
+    case '0':
+      console.log("Hurray: 0");
+      socket.emit('read', readObjects[0]);
+      break;
+    case '1':
+      console.log("Hurray: 1");
+      socket.emit('read', readObjects[1]);
+      break;
+    default:
+      whichObjects();
+  }
     socket.emit('ardTest', data);
   });
 });
@@ -114,18 +129,15 @@ function whichObjects() {
 
 
 
-var serialPortString = (function selectRfidSerialPort() {
+var serialPortString = function selectRfidSerialPort() {
   var foundsp;
   serialport.list(function (err, ports) {
     ports.forEach(function(port) {
       foundsp = port.comName;
       if(port.manufacturer == "Arduino (www.arduino.cc)") {
-        console.log(">>>Test<<<");
-        console.log(port.manufacturer);
-        console.log(foundsp);
-        return foundsp;
       }
     });
   });
-}());
-console.log(serialPortString);
+  console.log(foundsp);
+  return foundsp;
+};
