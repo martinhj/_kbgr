@@ -1,3 +1,13 @@
+
+/*
+ *
+ * based on adafruits readMifare.pde
+ * https://github.com/adafruit/Adafruit_NFCShield_I2C
+ *
+ */
+
+
+
 #include <Wire.h>
 #include <Adafruit_NFCShield_I2C.h>
 
