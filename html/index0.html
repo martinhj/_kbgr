@@ -41,7 +41,7 @@
    */
   server.on('goggleRead', function (readData) {
       //var url = 'http://www.kaibosh.no/' + readData.kaiURL;
-      var url = 'html/' + readData.kaiURL + ".html";
+      var url = readData.kaiURL + ".html";
       if (document.readyState === 'complete') {
         console.log('Opening url: ' + url);
         (function() {
